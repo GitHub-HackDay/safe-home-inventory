@@ -17,6 +17,22 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    flavorDimensions += "runtime"
+    productFlavors {
+        create("onnx") {
+            dimension = "runtime"
+            applicationIdSuffix = ".onnx"
+            versionNameSuffix = "-onnx"
+            manifestPlaceholders["appName"] = "SafeHome (ONNX)"
+        }
+        create("executorch") {
+            dimension = "runtime"
+            applicationIdSuffix = ".executorch"
+            versionNameSuffix = "-executorch"
+            manifestPlaceholders["appName"] = "SafeHome (ExecuTorch)"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -43,8 +59,12 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
-    // ONNXRuntime for model inference
-    implementation("com.microsoft.onnxruntime:onnxruntime-android:1.18.0")
+    // ONNX flavor - ONNXRuntime
+    add("onnxImplementation", "com.microsoft.onnxruntime:onnxruntime-android:1.18.0")
+
+    // ExecuTorch flavor - PyTorch Android (as ExecuTorch-specific library doesn't exist yet)
+    add("executorchImplementation", "org.pytorch:pytorch_android_lite:1.13.1")
+    add("executorchImplementation", "org.pytorch:pytorch_android_torchvision_lite:1.13.1")
 
     // CameraX
     implementation("androidx.camera:camera-core:1.3.1")

@@ -41,7 +41,7 @@ import java.util.concurrent.Executors
 class MainActivity : AppCompatActivity() {
 
     private lateinit var cameraExecutor: ExecutorService
-    private lateinit var detector: YoloV8Detector
+    private lateinit var detector: ObjectDetector
     private val inventoryManager = InventoryManager()
     private lateinit var photoManager: PhotoManager
     private lateinit var overlayView: OverlayView
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Initialize detector and photo manager
-        detector = YoloV8Detector(this)
+        detector = DetectorFactory.createDetector(this)
         photoManager = PhotoManager(this)
         inventoryManager.photoManager = photoManager
 

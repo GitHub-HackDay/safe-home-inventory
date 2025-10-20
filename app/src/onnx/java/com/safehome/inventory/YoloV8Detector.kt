@@ -8,7 +8,7 @@ import ai.onnxruntime.OrtEnvironment
 import ai.onnxruntime.OrtSession
 import java.nio.FloatBuffer
 
-class YoloV8Detector(context: Context) {
+class YoloV8Detector(context: Context) : ObjectDetector {
     private var session: OrtSession? = null
     private val ortEnv = OrtEnvironment.getEnvironment()
     private val confThreshold = 0.5f
@@ -25,7 +25,7 @@ class YoloV8Detector(context: Context) {
         }
     }
 
-    fun detect(bitmap: Bitmap): List<Detection> {
+    override fun detect(bitmap: Bitmap): List<Detection> {
         val startTime = System.currentTimeMillis()
 
         try {
@@ -166,7 +166,7 @@ class YoloV8Detector(context: Context) {
         return intersection / (area1 + area2 - intersection)
     }
 
-    fun close() {
+    override fun close() {
         session?.close()
     }
 
