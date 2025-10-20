@@ -5,7 +5,9 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.os.Bundle
+import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -18,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -40,8 +43,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var detector: YoloV8Detector
     private val inventoryManager = InventoryManager()
     private lateinit var overlayView: OverlayView
+    private lateinit var drawingOverlay: DrawingOverlayView
     private lateinit var inventoryAdapter: InventoryAdapter
     private lateinit var totalValueText: TextView
+    private var isDrawingMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         // Set up UI
         overlayView = findViewById(R.id.overlayView)
+        drawingOverlay = findViewById(R.id.drawingOverlay)
         totalValueText = findViewById(R.id.totalValueText)
 
         // Set up RecyclerView
@@ -108,6 +114,22 @@ class MainActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.clearButton).setOnClickListener {
             inventoryManager.clear()
             updateInventoryDisplay()
+        }
+
+        // Menu FAB
+        findViewById<FloatingActionButton>(R.id.menuFab).setOnClickListener { view ->
+            showMenu(view as FloatingActionButton)
+        }
+
+        // Draw FAB
+        val drawFab = findViewById<FloatingActionButton>(R.id.drawFab)
+        drawFab.setOnClickListener {
+            toggleDrawingMode(drawFab)
+        }
+
+        // Set up drawing overlay
+        drawingOverlay.setOnDrawingCompleteListener { path ->
+            showAddItemDialog()
         }
 
         // Camera executor
@@ -231,6 +253,149 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return items
+    }
+
+    private fun showMenu(anchorView: FloatingActionButton) {
+        val popup = PopupMenu(this, anchorView)
+        popup.menuInflater.inflate(R.menu.main_menu, popup.menu)
+
+        popup.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_export_pdf -> {
+                    exportToPdf()
+                    true
+                }
+                R.id.menu_clear_ignored -> {
+                    inventoryManager.clearIgnoredItems()
+                    Toast.makeText(this, "Ignored items cleared", Toast.LENGTH_SHORT).show()
+                    true
+                }
+                R.id.menu_about -> {
+                    showAbout()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        popup.show()
+    }
+
+    private fun exportToPdf() {
+        val pdfExporter = PdfExporter(this)
+        val groups = inventoryManager.getInventoryGroups()
+        val totalValue = inventoryManager.getTotalValue()
+
+        pdfExporter.exportInventory(groups, totalValue) { success, file ->
+            runOnUiThread {
+                if (success && file != null) {
+                    Toast.makeText(
+                        this,
+                        "PDF saved to ${file.absolutePath}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Failed to export PDF",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
+
+    private fun showAbout() {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("SafeHome Inventory")
+            .setMessage("""
+                Privacy-First Home Cataloging
+
+                Built for ExecuTorch Hackathon @ GitHub HQ
+                October 20, 2025
+
+                Tech:
+                • PyTorch ExecuTorch
+                • Qualcomm QNN Backend
+                • YOLOv8n Object Detection
+                • 100% On-Device Processing
+
+                All data stays on your device.
+            """.trimIndent())
+            .setPositiveButton("OK", null)
+            .show()
+    }
+
+    private fun toggleDrawingMode(fab: FloatingActionButton) {
+        isDrawingMode = !isDrawingMode
+        drawingOverlay.setDrawingEnabled(isDrawingMode)
+
+        if (isDrawingMode) {
+            fab.backgroundTintList = android.content.res.ColorStateList.valueOf(
+                android.graphics.Color.parseColor("#4CAF50")  // Green when active
+            )
+            Toast.makeText(this, "Draw mode ON - Circle an item to add", Toast.LENGTH_SHORT).show()
+        } else {
+            fab.backgroundTintList = android.content.res.ColorStateList.valueOf(
+                android.graphics.Color.parseColor("#FF9800")  // Orange when inactive
+            )
+            drawingOverlay.clearDrawing()
+            Toast.makeText(this, "Draw mode OFF", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showAddItemDialog() {
+        val dialogView = layoutInflater.inflate(android.R.layout.simple_list_item_2, null)
+        val nameInput = android.widget.EditText(this).apply {
+            hint = "Item name (e.g., Vintage Chair)"
+        }
+        val priceInput = android.widget.EditText(this).apply {
+            hint = "Estimated value (dollars)"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+        }
+
+        val layout = android.widget.LinearLayout(this).apply {
+            orientation = android.widget.LinearLayout.VERTICAL
+            setPadding(50, 20, 50, 20)
+            addView(nameInput)
+            addView(priceInput)
+        }
+
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Add Item to Inventory")
+            .setMessage("Enter details for the circled item")
+            .setView(layout)
+            .setPositiveButton("Add") { _, _ ->
+                val name = nameInput.text.toString().trim()
+                val priceText = priceInput.text.toString().trim()
+                val price = priceText.toDoubleOrNull() ?: 0.0
+
+                if (name.isNotEmpty() && price > 0) {
+                    // Add manually labeled item
+                    val trackedItem = TrackedItem(
+                        className = "manual",
+                        customName = name,
+                        pricePerItem = price,
+                        notes = "Manually added"
+                    )
+                    inventoryManager.addManualItem(trackedItem)
+                    updateInventoryDisplay()
+
+                    Toast.makeText(this, "$name added to inventory", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Invalid name or price", Toast.LENGTH_SHORT).show()
+                }
+
+                // Clear drawing and stay in draw mode
+                drawingOverlay.clearDrawing()
+            }
+            .setNegativeButton("Cancel") { _, _ ->
+                drawingOverlay.clearDrawing()
+            }
+            .setOnCancelListener {
+                drawingOverlay.clearDrawing()
+            }
+            .show()
     }
 
     override fun onDestroy() {

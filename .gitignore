@@ -21,6 +21,7 @@ local.properties
 
 # Documentation
 docs/
+images/
 
 # Python
 __pycache__/

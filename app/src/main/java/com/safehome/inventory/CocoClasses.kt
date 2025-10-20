@@ -39,9 +39,15 @@ object CocoClasses {
         "hair drier" to 40.0, "toaster" to 50.0, "potted plant" to 30.0
     )
 
-    fun getPrice(className: String): Double = PRICES[className] ?: 100.0
+    fun getPrice(className: String): Double {
+        // Manual items already have their price set, just return default for grouping
+        if (className == "manual") return 0.0
+        return PRICES[className] ?: 100.0
+    }
 
     fun isPropertyItem(className: String): Boolean {
+        // Always allow manual items
+        if (className == "manual") return true
         return !EXCLUDED_ITEMS.contains(className)
     }
 }

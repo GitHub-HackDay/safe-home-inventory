@@ -1,39 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000">
 
-    <!-- Camera Preview -->
-    <androidx.camera.view.PreviewView
-        android:id="@+id/previewView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/inventoryCard"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <!-- Camera Preview (full screen background) -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <!-- Bounding Box Overlay -->
-    <com.safehome.inventory.OverlayView
-        android:id="@+id/overlayView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="@id/previewView"
-        app:layout_constraintBottom_toBottomOf="@id/previewView"
-        app:layout_constraintStart_toStartOf="@id/previewView"
-        app:layout_constraintEnd_toEndOf="@id/previewView" />
+        <androidx.camera.view.PreviewView
+            android:id="@+id/previewView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-    <!-- Inventory Card -->
+        <!-- Bounding Box Overlay -->
+        <com.safehome.inventory.OverlayView
+            android:id="@+id/overlayView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- Drawing Overlay -->
+        <com.safehome.inventory.DrawingOverlayView
+            android:id="@+id/drawingOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+    <!-- Menu FAB (Upper Left) -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/menuFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_gravity="top|start"
+        android:src="@android:drawable/ic_menu_more"
+        app:tint="#FFFFFF"
+        app:backgroundTint="#2196F3"
+        app:elevation="6dp" />
+
+    <!-- Draw/Highlight FAB (Upper Right) -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/drawFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_gravity="top|end"
+        android:src="@android:drawable/ic_menu_edit"
+        app:tint="#FFFFFF"
+        app:backgroundTint="#FF9800"
+        app:elevation="6dp" />
+
+    <!-- Inventory Card (Bottom Sheet) -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/inventoryCard"
-        android:layout_width="0dp"
-        android:layout_height="280dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="0dp"
         app:cardElevation="8dp"
         app:cardCornerRadius="16dp"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        app:behavior_peekHeight="280dp"
+        app:behavior_hideable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -43,6 +73,15 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="16dp">
+
+            <!-- Drag Handle -->
+            <View
+                android:layout_width="40dp"
+                android:layout_height="4dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:background="#BDBDBD"
+                android:backgroundTint="#BDBDBD" />
 
             <!-- Header -->
             <LinearLayout
@@ -95,4 +134,4 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

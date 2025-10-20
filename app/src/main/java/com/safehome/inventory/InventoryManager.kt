@@ -60,7 +60,8 @@ class InventoryManager {
                 InventoryItemGroup(
                     className = className,
                     items = items.sortedByDescending { it.detectedAt },
-                    isExpanded = expandedGroups.contains(className)
+                    // Auto-expand manual items by default
+                    isExpanded = expandedGroups.contains(className) || className == "manual"
                 )
             }
             .sortedByDescending { it.totalValue }
@@ -95,5 +96,13 @@ class InventoryManager {
         lastDetectionTime.clear()
         expandedGroups.clear()
         ignoredClasses.clear()
+    }
+
+    fun clearIgnoredItems() {
+        ignoredClasses.clear()
+    }
+
+    fun addManualItem(item: TrackedItem) {
+        trackedItems.add(item)
     }
 }

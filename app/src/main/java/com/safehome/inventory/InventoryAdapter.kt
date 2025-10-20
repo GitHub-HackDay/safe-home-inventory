@@ -70,7 +70,14 @@ class InventoryAdapter(
                 val group = item.group
                 val expandIcon = if (group.isExpanded) "▼" else "▶"
 
-                groupHolder.nameText.text = "$expandIcon ${group.className} × ${group.count}"
+                // Show better name for manual items
+                val displayName = if (group.className == "manual") {
+                    "Manually Added Items"
+                } else {
+                    group.className
+                }
+
+                groupHolder.nameText.text = "$expandIcon $displayName × ${group.count}"
                 groupHolder.valueText.text = "$${group.totalValue.toInt()}"
 
                 groupHolder.itemView.setOnClickListener {
@@ -80,10 +87,17 @@ class InventoryAdapter(
             is InventoryListItem.IndividualItem -> {
                 val itemHolder = holder as ItemViewHolder
                 val trackedItem = item.item
-                val index = groups.find { it.className == item.groupClassName }
-                    ?.items?.indexOf(trackedItem)?.plus(1) ?: 1
 
-                itemHolder.nameText.text = "${trackedItem.displayName} #$index"
+                // Don't show index for manual items (they have unique custom names)
+                val displayText = if (item.groupClassName == "manual") {
+                    trackedItem.displayName
+                } else {
+                    val index = groups.find { it.className == item.groupClassName }
+                        ?.items?.indexOf(trackedItem)?.plus(1) ?: 1
+                    "${trackedItem.displayName} #$index"
+                }
+
+                itemHolder.nameText.text = displayText
                 itemHolder.valueText.text = "$${trackedItem.pricePerItem.toInt()}"
 
                 // Tap name to edit
