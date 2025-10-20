@@ -36,9 +36,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_gravity="top|start"
-        android:src="@android:drawable/ic_menu_more"
-        app:tint="#FFFFFF"
-        app:backgroundTint="#2196F3"
+        android:src="@drawable/logo"
+        app:tint="@null"
+        app:backgroundTint="#FFFFFF"
         app:elevation="6dp" />
 
     <!-- Draw/Highlight FAB (Upper Right) -->
