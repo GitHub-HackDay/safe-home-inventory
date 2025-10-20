@@ -89,12 +89,19 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 
 ## 📚 Documentation
 
-Detailed documentation available in `docs/`:
-- `BUILD_INSTRUCTIONS.md` - Complete hackathon build guide
-- `FEATURES.md` - Full feature list and technical specs
-- `EXECUTORCH_REVIEW.md` - ExecuTorch architecture notes
-- `MODEL_STATUS.md` - YOLOv8 model preparation
-- `DEVICE_INFO.md` - Samsung S25 specifications
+Comprehensive documentation available in `docs/`:
+
+### Core Documentation
+- **[Technical Specification](docs/TECHNICAL_SPECIFICATION.md)** - Complete architecture and design overview
+- **[Build Instructions](docs/BUILD_INSTRUCTIONS.md)** - Step-by-step build and deployment guide
+- **[User Guide](docs/USER_GUIDE.md)** - Complete user manual and tutorials
+- **[API Documentation](docs/API_DOCUMENTATION.md)** - Developer API reference and examples
+
+### Technical Deep Dives
+- **[Features Documentation](docs/FEATURES.md)** - Full feature list and capabilities
+- **[ExecuTorch Review](docs/EXECUTORCH_REVIEW.md)** - ExecuTorch migration analysis
+- **[Model Status](docs/MODEL_STATUS.md)** - YOLOv8 implementation details
+- **[Device Information](docs/DEVICE_INFO.md)** - Samsung Galaxy S25 specifications
 
 ---
 
