@@ -306,22 +306,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showAbout() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_about, null)
         androidx.appcompat.app.AlertDialog.Builder(this)
-            .setTitle("SafeHome Inventory")
-            .setMessage("""
-                Privacy-First Home Cataloging
-
-                Built for ExecuTorch Hackathon @ GitHub HQ
-                October 20, 2025
-
-                Tech:
-                • PyTorch ExecuTorch
-                • Qualcomm QNN Backend
-                • YOLOv8n Object Detection
-                • 100% On-Device Processing
-
-                All data stays on your device.
-            """.trimIndent())
+            .setView(dialogView)
             .setPositiveButton("OK", null)
             .show()
     }
