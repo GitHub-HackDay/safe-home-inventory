@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SafeHome Inventory</string>
+    <string name="welcome_message">Welcome to SafeHome Inventory!</string>
+    <string name="subtitle">Privacy-First Home Cataloging</string>
+    <string name="powered_by">Powered by ExecuTorch + Qualcomm QNN</string>
+    <string name="device_info">Samsung Galaxy S25 (Snapdragon 8 Elite)</string>
+    <string name="ready_message">Ready for Hackathon! 🚀</string>
+</resources>
