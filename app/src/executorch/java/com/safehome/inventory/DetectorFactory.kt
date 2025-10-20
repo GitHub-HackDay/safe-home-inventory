@@ -1,5 +1,6 @@
 package com.safehome.inventory
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 
@@ -14,5 +15,14 @@ object DetectorFactory : PresentationProvider {
 
     override fun getPresentationIntent(context: Context): Intent {
         return Intent(context, ExecuTorchPresentationActivity::class.java)
+    }
+
+    /**
+     * Optional post-initialization hook for ExecuTorch-specific UI
+     */
+    fun onDetectorCreated(activity: Activity, detector: ObjectDetector) {
+        if (activity is MainActivity) {
+            activity.setupHardwareBanner(detector)
+        }
     }
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_ai_descriptions"
+        android:title="AI Item Descriptions"
+        android:icon="@android:drawable/ic_menu_sort_by_size" />
+
+    <item
+        android:id="@+id/menu_presentation"
+        android:title="Show Presentation"
+        android:icon="@android:drawable/ic_menu_slideshow" />
+
+    <item
+        android:id="@+id/menu_photo_gallery"
+        android:title="Photo Gallery"
+        android:icon="@android:drawable/ic_menu_gallery" />
+
+    <item
+        android:id="@+id/menu_export_pdf"
+        android:title="Export to PDF"
+        android:icon="@android:drawable/ic_menu_save" />
+
+    <item
+        android:id="@+id/menu_clear_ignored"
+        android:title="Clear Ignored Items"
+        android:icon="@android:drawable/ic_menu_revert" />
+
+    <item
+        android:id="@+id/menu_about"
+        android:title="About"
+        android:icon="@android:drawable/ic_menu_info_details" />
+</menu>

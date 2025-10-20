@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() {
 
         // Initialize detector and photo manager
         detector = DetectorFactory.createDetector(this)
+        DetectorFactory.onDetectorCreated(this, detector)
         photoManager = PhotoManager(this)
         inventoryManager.photoManager = photoManager
 

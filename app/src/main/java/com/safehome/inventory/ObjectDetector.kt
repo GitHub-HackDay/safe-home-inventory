@@ -15,6 +15,18 @@ interface ObjectDetector {
     fun detect(bitmap: Bitmap): List<Detection>
 
     /**
+     * Get hardware accelerator information (optional).
+     * @return Hardware info string, or null if not applicable
+     */
+    fun getHardwareInfo(): String? = null
+
+    /**
+     * Get last inference time in milliseconds (optional).
+     * @return Inference time, or 0 if not tracked
+     */
+    fun getLastInferenceTime(): Long = 0
+
+    /**
      * Clean up resources when done.
      */
     fun close()

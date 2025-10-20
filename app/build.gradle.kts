@@ -77,4 +77,7 @@ dependencies {
 
     // ViewPager2 for presentation slides
     implementation("androidx.viewpager2:viewpager2:1.0.0")
+
+    // Kotlin Coroutines (for AI description generation)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 }
