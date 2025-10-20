@@ -44,7 +44,8 @@ fun MainActivity.setupHardwareBanner(detector: ObjectDetector) {
         ViewGroup.LayoutParams.MATCH_PARENT,
         ViewGroup.LayoutParams.WRAP_CONTENT
     ).apply {
-        setMargins(16, 80, 16, 0) // Position below menu FAB
+        gravity = android.view.Gravity.BOTTOM
+        setMargins(16, 0, 16, 300) // Position above inventory card
     }
 
     rootView.addView(banner, layoutParams)
