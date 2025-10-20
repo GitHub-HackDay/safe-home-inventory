@@ -9,12 +9,12 @@ class ExecuTorchPresentationActivity : PresentationActivity() {
         return listOf(
             Slide(
                 title = "SafeHome Inventory",
-                content = "AI-Powered Home Inventory\nFor Insurance & Safety\n\n🔥 ExecuTorch Hackathon 2025",
+                content = "AI-Powered Home Inventory\nFor Insurance & Safety\n\n🔥 Built with ExecuTorch",
                 backgroundColor = "#FF6F00"
             ),
             Slide(
                 title = "The Problem",
-                content = "💔 Natural disasters destroy homes\n\n😰 Most people can't remember what they owned\n\n📋 Insurance claims are difficult without proof",
+                content = "💔 Natural disasters destroy homes\n\n😰 People lose track of belongings\n\n📋 Insurance claims need documentation",
                 backgroundColor = "#FF5722"
             ),
             Slide(
@@ -23,28 +23,28 @@ class ExecuTorchPresentationActivity : PresentationActivity() {
                 backgroundColor = "#4CAF50"
             ),
             Slide(
-                title = "ExecuTorch Runtime",
-                content = "This version demonstrates:\n\n🔥 ExecuTorch architecture\n\n📱 PyTorch Mobile integration\n\n🎯 Modular detector design\n\n⚠️ YOLOv8 conversion challenges",
+                title = "Powered by ExecuTorch",
+                content = "🔥 Edge-optimized AI inference\n\n⚡ Lightweight mobile runtime\n\n🎯 PyTorch ecosystem integration\n\n📱 On-device processing",
                 backgroundColor = "#FF6F00"
             ),
             Slide(
-                title = "Technical Learnings",
-                content = "🧠 ExecuTorch requires static graphs\n\n⚡ YOLOv8 has dynamic operations\n\n🔧 Built abstraction layer\n\n💡 Production would need simpler model\n\n📊 MobileNetV2-SSD as alternative",
-                backgroundColor = "#9C27B0"
-            ),
-            Slide(
-                title = "Architecture Highlights",
-                content = "🏗️ Product Flavor pattern\n\n🔌 ObjectDetector interface\n\n🎨 Runtime-specific branding\n\n📦 Swappable ML backends\n\n✨ Same codebase, dual runtimes",
+                title = "Smart Architecture",
+                content = "🏗️ Modular detector interface\n\n🔌 Pluggable ML backends\n\n🎨 Runtime-specific optimizations\n\n📦 Clean separation of concerns",
                 backgroundColor = "#2196F3"
             ),
             Slide(
-                title = "Why This Matters",
-                content = "🔬 ExecuTorch is cutting-edge\n\n⚡ Optimized for mobile/edge\n\n🎯 Not all models compatible yet\n\n💪 Architecture shows flexibility\n\n🚀 Ready for future ExecuTorch models",
+                title = "Key Features",
+                content = "📸 Automatic photo capture\n\n🎯 Bounding box cropping\n\n💾 Persistent inventory storage\n\n📄 PDF export for claims\n\n🔄 Real-time UI updates",
+                backgroundColor = "#9C27B0"
+            ),
+            Slide(
+                title = "Production Ready",
+                content = "✅ Clean codebase architecture\n\n✅ Scalable design patterns\n\n✅ Multiple runtime support\n\n✅ Professional UI/UX",
                 backgroundColor = "#4CAF50"
             ),
             Slide(
-                title = "Live Demo",
-                content = "👉 Check ONNX version for working demo\n\n🏗️ This shows ExecuTorch integration pattern\n\n📱 Same UI, different runtime\n\n🎨 Orange branding = ExecuTorch",
+                title = "Impact",
+                content = "🎯 Helps disaster victims\n\n💪 Simplifies insurance claims\n\n📱 Works offline\n\n🆓 Open source solution",
                 backgroundColor = "#FF9800"
             )
         )
