@@ -1,9 +1,10 @@
 package com.safehome.inventory
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +18,7 @@ fun MainActivity.setupHardwareBanner(detector: ObjectDetector) {
     // Only add banner if detector supports hardware info
     val hardwareInfo = detector.getHardwareInfo() ?: return
 
-    val rootView = findViewById<CoordinatorLayout>(android.R.id.content) ?: return
+    val rootView = window.decorView.findViewById<FrameLayout>(android.R.id.content)
 
     // Inflate the hardware banner
     val banner = LayoutInflater.from(this).inflate(
@@ -39,7 +40,7 @@ fun MainActivity.setupHardwareBanner(detector: ObjectDetector) {
     }
 
     // Add banner to top of view hierarchy
-    val layoutParams = CoordinatorLayout.LayoutParams(
+    val layoutParams = FrameLayout.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
         ViewGroup.LayoutParams.WRAP_CONTENT
     ).apply {
