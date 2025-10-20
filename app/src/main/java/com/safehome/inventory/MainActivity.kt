@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.os.Bundle
+import android.view.View
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var detector: YoloV8Detector
     private val inventoryManager = InventoryManager()
+    private lateinit var photoManager: PhotoManager
     private lateinit var overlayView: OverlayView
     private lateinit var drawingOverlay: DrawingOverlayView
     private lateinit var inventoryAdapter: InventoryAdapter
@@ -52,8 +54,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Initialize detector
+        // Initialize detector and photo manager
         detector = YoloV8Detector(this)
+        photoManager = PhotoManager(this)
+        inventoryManager.photoManager = photoManager
 
         // Set up UI
         overlayView = findViewById(R.id.overlayView)
@@ -219,8 +223,8 @@ class MainActivity : AppCompatActivity() {
             overlayView.updateDetections(detections)
         }
 
-        // Update inventory
-        val updated = inventoryManager.addDetections(detections)
+        // Update inventory with photo capture
+        val updated = inventoryManager.addDetections(detections, rotated)
         if (updated) {
             runOnUiThread {
                 updateInventoryDisplay()
@@ -261,6 +265,10 @@ class MainActivity : AppCompatActivity() {
 
         popup.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
+                R.id.menu_photo_gallery -> {
+                    showPhotoGallery()
+                    true
+                }
                 R.id.menu_export_pdf -> {
                     exportToPdf()
                     true
@@ -303,6 +311,51 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun showPhotoGallery() {
+        val groups = inventoryManager.getInventoryGroups()
+        val itemsWithPhotos = groups.flatMap { it.items }.filter { it.hasPhoto }
+
+        if (itemsWithPhotos.isEmpty()) {
+            Toast.makeText(this, "No photos yet! Point camera at items to capture.", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        // Create simple grid view dialog
+        val gridView = android.widget.GridView(this).apply {
+            numColumns = 3
+            verticalSpacing = 8
+            horizontalSpacing = 8
+            setPadding(16, 16, 16, 16)
+        }
+
+        // Simple adapter for grid
+        gridView.adapter = object : android.widget.BaseAdapter() {
+            override fun getCount() = itemsWithPhotos.size
+            override fun getItem(position: Int) = itemsWithPhotos[position]
+            override fun getItemId(position: Int) = position.toLong()
+
+            override fun getView(position: Int, convertView: View?, parent: android.view.ViewGroup?): View {
+                val imageView = (convertView as? android.widget.ImageView) ?: android.widget.ImageView(this@MainActivity).apply {
+                    layoutParams = android.widget.AbsListView.LayoutParams(200, 200)
+                    scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
+                }
+
+                val item = itemsWithPhotos[position]
+                val bitmap = android.graphics.BitmapFactory.decodeFile(item.photoPath)
+                imageView.setImageBitmap(bitmap)
+
+                return imageView
+            }
+        }
+
+        // Show dialog
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Photo Gallery (${itemsWithPhotos.size} photos)")
+            .setView(gridView)
+            .setPositiveButton("Close", null)
+            .show()
     }
 
     private fun showAbout() {

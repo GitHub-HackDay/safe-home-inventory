@@ -1,5 +1,7 @@
 package com.safehome.inventory
 
+import android.graphics.Bitmap
+
 class InventoryManager {
     private val trackedItems = mutableListOf<TrackedItem>()
     private val lastDetectionTime = mutableMapOf<String, Long>()
@@ -7,7 +9,9 @@ class InventoryManager {
     private val cooldownMs = 3000L
     private val expandedGroups = mutableSetOf<String>()
 
-    fun addDetections(detections: List<Detection>): Boolean {
+    var photoManager: PhotoManager? = null
+
+    fun addDetections(detections: List<Detection>, capturedFrame: Bitmap? = null): Boolean {
         var updated = false
         val currentTime = System.currentTimeMillis()
 
@@ -27,11 +31,21 @@ class InventoryManager {
             val lastTime = lastDetectionTime[className] ?: 0L
 
             if (currentTime - lastTime > cooldownMs) {
+                // Capture photo if frame available
+                val photoPath = if (capturedFrame != null && photoManager != null) {
+                    val itemId = java.util.UUID.randomUUID().toString()
+                    photoManager?.saveItemPhoto(itemId, capturedFrame, detection.bbox)
+                } else {
+                    null
+                }
+
                 // Add new tracked item
                 trackedItems.add(
                     TrackedItem(
                         className = className,
-                        pricePerItem = CocoClasses.getPrice(className)
+                        pricePerItem = CocoClasses.getPrice(className),
+                        photoPath = photoPath,
+                        boundingBox = detection.bbox
                     )
                 )
 

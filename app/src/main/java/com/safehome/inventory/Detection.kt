@@ -23,9 +23,12 @@ data class TrackedItem(
     var customName: String? = null,  // User can set custom name
     val detectedAt: Long = System.currentTimeMillis(),
     val pricePerItem: Double,
-    var notes: String? = null
+    var notes: String? = null,
+    var photoPath: String? = null,  // Path to captured photo
+    var boundingBox: BoundingBox? = null  // Original bounding box
 ) {
     val displayName: String get() = customName ?: className
+    val hasPhoto: Boolean get() = photoPath != null
 }
 
 // Grouped inventory view (for display)

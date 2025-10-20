@@ -36,6 +36,7 @@ class InventoryAdapter(
     }
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val photoThumb: android.widget.ImageView = view.findViewById(R.id.itemPhotoThumb)
         val nameText: TextView = view.findViewById(R.id.itemNameText)
         val valueText: TextView = view.findViewById(R.id.itemValueText)
     }
@@ -99,6 +100,24 @@ class InventoryAdapter(
 
                 itemHolder.nameText.text = displayText
                 itemHolder.valueText.text = "$${trackedItem.pricePerItem.toInt()}"
+
+                // Load photo thumbnail
+                if (trackedItem.hasPhoto && trackedItem.photoPath != null) {
+                    val bitmap = android.graphics.BitmapFactory.decodeFile(trackedItem.photoPath)
+                    itemHolder.photoThumb.setImageBitmap(bitmap)
+                    itemHolder.photoThumb.visibility = View.VISIBLE
+                } else {
+                    itemHolder.photoThumb.setImageDrawable(null)
+                    itemHolder.photoThumb.setBackgroundColor(android.graphics.Color.parseColor("#E0E0E0"))
+                    itemHolder.photoThumb.visibility = View.VISIBLE
+                }
+
+                // Tap photo to view full size
+                itemHolder.photoThumb.setOnClickListener {
+                    if (trackedItem.hasPhoto && trackedItem.photoPath != null) {
+                        // TODO: Show full-size photo dialog
+                    }
+                }
 
                 // Tap name to edit
                 itemHolder.nameText.setOnClickListener {
