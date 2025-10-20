@@ -14,6 +14,11 @@ class InventoryManager {
         for (detection in detections) {
             val className = detection.className
 
+            // Skip non-property items (people, animals, food)
+            if (!CocoClasses.isPropertyItem(className)) {
+                continue
+            }
+
             // Skip ignored classes
             if (ignoredClasses.contains(className)) {
                 continue
