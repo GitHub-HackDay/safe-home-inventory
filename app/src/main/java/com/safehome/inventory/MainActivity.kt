@@ -65,6 +65,10 @@ class MainActivity : AppCompatActivity() {
                 inventoryManager.updateItemName(itemId, newName)
                 updateInventoryDisplay()
             },
+            onItemPriceEdit = { itemId, newPrice ->
+                inventoryManager.updateItemPrice(itemId, newPrice)
+                updateInventoryDisplay()
+            },
             onItemDelete = { itemId ->
                 inventoryManager.removeItem(itemId)
                 updateInventoryDisplay()
@@ -72,6 +76,33 @@ class MainActivity : AppCompatActivity() {
         )
         recyclerView.adapter = inventoryAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        // Set up swipe gestures
+        val swipeHelper = SwipeHelper(
+            onSwipeLeft = { position ->
+                // Swipe left to ignore
+                val groups = inventoryManager.getInventoryGroups()
+                val items = buildFlatList(groups)
+                if (position < items.size) {
+                    when (val item = items[position]) {
+                        is InventoryListItem.GroupHeader -> {
+                            inventoryManager.ignoreClass(item.group.className)
+                            updateInventoryDisplay()
+                        }
+                        is InventoryListItem.IndividualItem -> {
+                            inventoryManager.removeItem(item.item.id)
+                            updateInventoryDisplay()
+                        }
+                    }
+                }
+            },
+            onSwipeRight = { position ->
+                // Swipe right - already added, just dismiss swipe
+                inventoryAdapter.notifyItemChanged(position)
+            }
+        )
+        val itemTouchHelper = androidx.recyclerview.widget.ItemTouchHelper(swipeHelper)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
 
         // Clear button
         findViewById<MaterialButton>(R.id.clearButton).setOnClickListener {
@@ -187,6 +218,19 @@ class MainActivity : AppCompatActivity() {
         val groups = inventoryManager.getInventoryGroups()
         inventoryAdapter.updateGroups(groups)
         totalValueText.text = "$${inventoryManager.getTotalValue().toInt()}"
+    }
+
+    private fun buildFlatList(groups: List<InventoryItemGroup>): List<InventoryListItem> {
+        val items = mutableListOf<InventoryListItem>()
+        for (group in groups) {
+            items.add(InventoryListItem.GroupHeader(group))
+            if (group.isExpanded) {
+                for (item in group.items) {
+                    items.add(InventoryListItem.IndividualItem(item, group.className))
+                }
+            }
+        }
+        return items
     }
 
     override fun onDestroy() {

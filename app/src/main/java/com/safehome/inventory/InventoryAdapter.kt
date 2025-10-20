@@ -18,6 +18,7 @@ sealed class InventoryListItem {
 class InventoryAdapter(
     private val onGroupClick: (String) -> Unit,
     private val onItemNameEdit: (String, String) -> Unit,
+    private val onItemPriceEdit: (String, Double) -> Unit,
     private val onItemDelete: (String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -85,14 +86,20 @@ class InventoryAdapter(
                 itemHolder.nameText.text = "${trackedItem.displayName} #$index"
                 itemHolder.valueText.text = "$${trackedItem.pricePerItem.toInt()}"
 
-                itemHolder.itemView.setOnClickListener {
-                    showItemEditDialog(itemHolder.itemView, trackedItem)
+                // Tap name to edit
+                itemHolder.nameText.setOnClickListener {
+                    showItemNameEditDialog(itemHolder.itemView, trackedItem)
+                }
+
+                // Tap price to edit
+                itemHolder.valueText.setOnClickListener {
+                    showPriceEditDialog(itemHolder.itemView, trackedItem)
                 }
             }
         }
     }
 
-    private fun showItemEditDialog(view: View, item: TrackedItem) {
+    private fun showItemNameEditDialog(view: View, item: TrackedItem) {
         val context = view.context
         val editText = EditText(context).apply {
             setText(item.displayName)
@@ -100,8 +107,7 @@ class InventoryAdapter(
         }
 
         AlertDialog.Builder(context)
-            .setTitle("Edit Item")
-            .setMessage("Customize item name or delete")
+            .setTitle("Edit Item Name")
             .setView(editText)
             .setPositiveButton("Save") { _, _ ->
                 val newName = editText.text.toString().trim()
@@ -113,6 +119,29 @@ class InventoryAdapter(
                 onItemDelete(item.id)
             }
             .setNeutralButton("Cancel", null)
+            .show()
+    }
+
+    private fun showPriceEditDialog(view: View, item: TrackedItem) {
+        val context = view.context
+        val editText = EditText(context).apply {
+            setText(item.pricePerItem.toInt().toString())
+            hint = "Price in dollars"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+        }
+
+        AlertDialog.Builder(context)
+            .setTitle("Edit Price")
+            .setMessage("Estimated value for ${item.displayName}")
+            .setView(editText)
+            .setPositiveButton("Save") { _, _ ->
+                val priceText = editText.text.toString().trim()
+                val newPrice = priceText.toDoubleOrNull()
+                if (newPrice != null && newPrice >= 0) {
+                    onItemPriceEdit(item.id, newPrice)
+                }
+            }
+            .setNegativeButton("Cancel", null)
             .show()
     }
 

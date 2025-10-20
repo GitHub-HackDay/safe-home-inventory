@@ -3,6 +3,7 @@ package com.safehome.inventory
 class InventoryManager {
     private val trackedItems = mutableListOf<TrackedItem>()
     private val lastDetectionTime = mutableMapOf<String, Long>()
+    private val ignoredClasses = mutableSetOf<String>()  // Classes to never track
     private val cooldownMs = 3000L
     private val expandedGroups = mutableSetOf<String>()
 
@@ -12,6 +13,12 @@ class InventoryManager {
 
         for (detection in detections) {
             val className = detection.className
+
+            // Skip ignored classes
+            if (ignoredClasses.contains(className)) {
+                continue
+            }
+
             val lastTime = lastDetectionTime[className] ?: 0L
 
             if (currentTime - lastTime > cooldownMs) {
@@ -29,6 +36,16 @@ class InventoryManager {
         }
 
         return updated
+    }
+
+    fun ignoreClass(className: String) {
+        ignoredClasses.add(className)
+        // Remove all items of this class
+        trackedItems.removeAll { it.className == className }
+    }
+
+    fun unignoreClass(className: String) {
+        ignoredClasses.remove(className)
     }
 
     fun getInventoryGroups(): List<InventoryItemGroup> {
@@ -72,5 +89,6 @@ class InventoryManager {
         trackedItems.clear()
         lastDetectionTime.clear()
         expandedGroups.clear()
+        ignoredClasses.clear()
     }
 }
