@@ -265,6 +265,10 @@ class MainActivity : AppCompatActivity() {
 
         popup.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
+                R.id.menu_presentation -> {
+                    PresentationLauncher.launch(this)
+                    true
+                }
                 R.id.menu_photo_gallery -> {
                     showPhotoGallery()
                     true

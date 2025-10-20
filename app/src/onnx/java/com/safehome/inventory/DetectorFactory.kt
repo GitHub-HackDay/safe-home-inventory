@@ -1,13 +1,18 @@
 package com.safehome.inventory
 
 import android.content.Context
+import android.content.Intent
 
 /**
  * Factory for creating the ONNX-based detector.
  * This is the ONNX Runtime flavor implementation.
  */
-object DetectorFactory {
+object DetectorFactory : PresentationProvider {
     fun createDetector(context: Context): ObjectDetector {
         return YoloV8Detector(context)
+    }
+
+    override fun getPresentationIntent(context: Context): Intent {
+        return Intent(context, OnnxPresentationActivity::class.java)
     }
 }

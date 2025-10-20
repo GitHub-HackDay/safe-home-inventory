@@ -74,4 +74,7 @@ dependencies {
 
     // RecyclerView
     implementation("androidx.recyclerview:recyclerview:1.3.2")
+
+    // ViewPager2 for presentation slides
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
 }
