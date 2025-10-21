@@ -49,6 +49,15 @@ class DrawingOverlayView @JvmOverloads constructor(
         invalidate()
     }
 
+    /**
+     * Get the bounding rectangle of the drawn path
+     */
+    fun getPathBounds(path: Path): android.graphics.RectF {
+        val bounds = android.graphics.RectF()
+        path.computeBounds(bounds, true)
+        return bounds
+    }
+
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (!isDrawingEnabled) return false
 

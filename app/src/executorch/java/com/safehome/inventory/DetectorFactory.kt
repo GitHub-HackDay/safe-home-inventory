@@ -23,6 +23,7 @@ object DetectorFactory : PresentationProvider {
     fun onDetectorCreated(activity: Activity, detector: ObjectDetector) {
         if (activity is MainActivity) {
             activity.setupHardwareBanner(detector)
+            activity.setupAIVisionHighlight()
         }
     }
 }

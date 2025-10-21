@@ -38,8 +38,13 @@ class ExecuTorchPresentationActivity : PresentationActivity() {
                 backgroundColor = "#9C27B0"
             ),
             Slide(
+                title = "AI Vision Identification",
+                content = "✨ NEW: Draw-to-Identify\n\n🖊️ Circle any item with your finger\n\n👁️ Llama 3.2 Vision analyzes image\n\n🎯 Instant AI-powered identification\n\n⚡ Qualcomm NPU acceleration",
+                backgroundColor = "#E91E63"
+            ),
+            Slide(
                 title = "Key Features",
-                content = "📸 Automatic photo capture\n\n🎯 Bounding box cropping\n\n💾 Persistent inventory storage\n\n📄 PDF export for claims\n\n🔄 Real-time UI updates",
+                content = "📸 Automatic photo capture\n\n✨ AI vision item identification\n\n🎯 Bounding box cropping\n\n💾 Persistent inventory storage\n\n📄 PDF export for claims\n\n🔄 Real-time UI updates",
                 backgroundColor = "#673AB7"
             ),
             Slide(

@@ -31,6 +31,12 @@ android {
             versionNameSuffix = "-executorch"
             manifestPlaceholders["appName"] = "SafeHome (ExecuTorch)"
         }
+        create("qnn") {
+            dimension = "runtime"
+            applicationIdSuffix = ".qnn"
+            versionNameSuffix = "-qnn"
+            manifestPlaceholders["appName"] = "SafeHome (QNN)"
+        }
     }
 
     buildTypes {
@@ -51,6 +57,18 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    packaging {
+        // Pick first for duplicate native libraries from ExecuTorch vs PyTorch dependencies
+        pickFirst("lib/arm64-v8a/libc++_shared.so")
+        pickFirst("lib/armeabi-v7a/libc++_shared.so")
+        pickFirst("lib/x86/libc++_shared.so")
+        pickFirst("lib/x86_64/libc++_shared.so")
+        pickFirst("lib/arm64-v8a/libfbjni.so")
+        pickFirst("lib/armeabi-v7a/libfbjni.so")
+        pickFirst("lib/x86/libfbjni.so")
+        pickFirst("lib/x86_64/libfbjni.so")
+    }
 }
 
 dependencies {
@@ -62,9 +80,15 @@ dependencies {
     // ONNX flavor - ONNXRuntime
     add("onnxImplementation", "com.microsoft.onnxruntime:onnxruntime-android:1.18.0")
 
-    // ExecuTorch flavor - PyTorch Android (as ExecuTorch-specific library doesn't exist yet)
+    // ExecuTorch flavor - using ONNX Runtime bridge until proper .pte export
+    add("executorchImplementation", "com.microsoft.onnxruntime:onnxruntime-android:1.18.0")
     add("executorchImplementation", "org.pytorch:pytorch_android_lite:1.13.1")
     add("executorchImplementation", "org.pytorch:pytorch_android_torchvision_lite:1.13.1")
+
+    // QNN flavor - Qualcomm QNN backend for maximum NPU performance
+    add("qnnImplementation", "com.microsoft.onnxruntime:onnxruntime-android:1.18.0")
+    add("qnnImplementation", "org.pytorch:pytorch_android_lite:1.13.1")
+    add("qnnImplementation", "org.pytorch:pytorch_android_torchvision_lite:1.13.1")
 
     // CameraX
     implementation("androidx.camera:camera-core:1.3.1")

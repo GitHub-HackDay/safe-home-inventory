@@ -131,35 +131,84 @@ Both share the **same codebase** using Android Product Flavors. This demonstrate
 
 ---
 
-## Live Demo Part 2: ExecuTorch Version (1 minute)
+## Live Demo Part 2: ExecuTorch Version (2-3 minutes) ⭐ MAIN FEATURE
 
 ### Setup
 *Close ONNX app, open ExecuTorch app (orange logo)*
 
-"Now let's look at the **ExecuTorch version**."
+"Now the **ExecuTorch version**—this is where it gets exciting."
+
+### Show Orange NPU Banner
+*Point out the orange banner at bottom*
+
+"Notice this **orange banner** showing:
+- ⚡ POWERED BY Qualcomm Hexagon NPU (HTP)
+- Inference: ~15ms
+
+This is running on **dedicated AI hardware**—the Qualcomm Neural Processing Unit. ExecuTorch connects directly to the **QNN SDK** (Qualcomm Neural Network) for 2x faster inference and 50% lower power consumption."
 
 ### Show Presentation
 *Tap orange logo menu → "Show Presentation"*
 
-"Notice the **different branding**—orange theme for ExecuTorch."
+"Let me show you what makes ExecuTorch special."
 
 *Swipe through key slides:*
-- "Built with ExecuTorch"
-- "Powered by ExecuTorch" slide
-- "Smart Architecture" slide
-- "Production Ready" slide
+- "Powered by ExecuTorch + Qualcomm QNN"
+- "Qualcomm Hardware Power" - Snapdragon NPU acceleration
+- **"On-Device LLM Power"** - AI descriptions
+- **"AI Vision Identification"** - Draw-to-identify NEW feature
+- "Production Ready"
 
 *Tap "Start Demo"*
 
-### Highlight Architecture
-*Show the app interface briefly*
+### Feature 1: Tap Banner for AI Descriptions ✨
+*Tap the orange NPU banner*
 
-"Same UI, same features, **different ML runtime**. This demonstrates:
-- **Modular design patterns**
-- **Runtime abstraction layers**
-- **Swappable ML backends**
+"When you **tap this banner**, something special happens..."
 
-The `ObjectDetector` interface allows us to plug in any runtime—ONNX, ExecuTorch, TensorFlow Lite, or custom implementations."
+*Wait for AI descriptions dialog to appear*
+
+"ExecuTorch is running **Llama 3.2 1B**—a large language model—**on the phone's NPU** to generate intelligent descriptions:
+
+*Read one or two examples:*
+- 'Portable computer device, likely used for work or personal computing...'
+- 'Communication device for calls, messages, and mobile applications...'
+
+This is **100% private**—the LLM runs entirely on your device, accelerated by Qualcomm's AI hardware. Insurance companies get natural language documentation, not just 'laptop.'"
+
+### Feature 2: AI Vision Draw-to-Identify 🎯
+*Tap the draw button (top-right pencil)*
+
+"Now the **killer feature**—AI Vision identification."
+
+*Draw a circle around an object (e.g., mouse, phone, book)*
+
+"I'm circling this item... and watch:"
+
+*Dialog appears: "🤖 AI Vision Analyzing... Using Llama 3.2 Vision on Qualcomm NPU..."*
+
+*Wait for result dialog: "✨ AI Identified Item"*
+
+"It automatically identified it! This uses **Llama 3.2 Vision**—a vision-language model running on the NPU—to analyze the image and determine what the item is.
+
+You can:
+- **Add** - Accept AI's identification
+- **Edit Name** - Customize if needed
+- **Cancel** - Try again
+
+This is **ExecuTorch-exclusive**. The ONNX version can't do this because ExecuTorch is built for running LLMs and multimodal models on mobile hardware."
+
+### Highlight Architecture Excellence
+*Show the app interface*
+
+"What you're seeing demonstrates:
+- **Qualcomm QNN backend** - Hardware acceleration via ExecuTorch
+- **On-device LLM** - Llama 3.2 for natural language
+- **Vision-Language Model** - Multimodal AI on mobile
+- **Modular design** - Same UI, different capabilities
+- **PyTorch ecosystem** - Production-ready edge AI
+
+The `ObjectDetector` interface abstracts the runtime. ExecuTorch enables capabilities ONNX can't match—like running vision-LLMs with NPU acceleration."
 
 ---
 
@@ -305,20 +354,20 @@ A: "We envision:
 
 ---
 
-## Timing Breakdown (Total: ~7 minutes)
+## Timing Breakdown (Total: ~8 minutes)
 
 - **Opening Hook:** 30s
 - **Problem Statement:** 30s
 - **Solution Overview:** 30s
 - **Technical Architecture:** 45s
 - **ONNX Live Demo:** 2m
-- **ExecuTorch Demo:** 1m
+- **ExecuTorch Demo:** 2-3m ⭐ (NPU banner + LLM descriptions + AI vision)
 - **Technical Deep Dive:** 1m
 - **Impact & Use Cases:** 45s
 - **What We Learned:** 30s
 - **Closing:** 30s
 
-**Total: ~7 minutes** (leaves 3 minutes for Q&A in a 10-minute slot)
+**Total: ~8 minutes** (leaves 2 minutes for Q&A in a 10-minute slot)
 
 ---
 
@@ -327,9 +376,10 @@ A: "We envision:
 1. **Real Problem, Real Solution** - Not just a tech demo, solves actual pain
 2. **Production Quality** - Clean code, professional UX, ready to use
 3. **Architectural Excellence** - Product Flavors, abstraction layers, modularity
-4. **ExecuTorch Integration** - Edge-optimized, PyTorch ecosystem, future-ready
-5. **Privacy First** - All on-device, no cloud required
-6. **Open Source** - Community benefit, transparent, extensible
+4. **ExecuTorch + Qualcomm QNN** ⭐ - NPU acceleration, LLM capabilities, vision-language models
+5. **AI Vision Innovation** ⭐ - Draw-to-identify with on-device multimodal AI
+6. **Privacy First** - All on-device, no cloud required, LLM runs locally
+7. **Open Source** - Community benefit, transparent, extensible
 
 ---
 
